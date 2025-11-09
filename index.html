@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOIのデジタルペット友達</title>
+    <link rel="icon" href="graphics/favicon.ico" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="AOI Pet">
+    <meta property="og:image" content="graphics/metaimage.png">
+    <meta property="og:description" content="AOIのデジタルペット友達 - 可愛い電子ペットゲーム">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Fredoka+One:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <script defer src="js/objOriented.js"></script>
+    <script defer src="js/clock.js"></script>
+</head>
+
+<body>
+    <div class="game-container">
+        <main class="tamagotchi-device">
+            <header id="gameTitle">AOIのデジタルペット友達</header>
+
+        <section class="screen">
+            <marquee scrollamount="4">
+                <p>
+                    <span>__</span>
+                    <span id="clock" onload="updateTime()"></span>
+                    <span> __ HAPPY: </span><span id="happy"></span><span>%</span>
+                    <span> __ TUMMY: </span><span id="tummy"></span><span>%</span>
+                    <span> __ ENERGY: </span><span id="energy"></span><span>%</span>
+                    <span>__</span>
+                </p>
+            </marquee>
+            <div class="pet-container pacing">
+                <canvas class="pet" id="petCanvas" width="64" height="64"></canvas>
+            </div>
+        </section>
+
+        <section class="button-container">
+            <div>
+                <button id="play"></button>
+                <p id="play-text" class="button-text" style="margin-left: -2px;">遊ぶ</p>
+            </div>
+            <div class="middle-button">
+                <button id="feed"></button>
+                <p id="feed-text" class="button-text" style="margin-left: -4px;">餌</p>
+            </div>
+            <div>
+                <button id="sleep"></button>
+                <p id="sleep-text" class="button-text" style="margin-left: -5px;">眠る</p>
+            </div>
+        </section>
+        <div class="mobile-help" style="display: none;">タップでボタン名表示</div>
+        </main>
+        
+        <aside class="control-panel">
+            <div class="control-group">
+                <label>言語</label>
+                <select id="languageSelect">
+                    <option value="ja">日本語</option>
+                    <option value="zh">中文</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label id="characterTypeLabel">キャラクタータイプ</label>
+                <select id="characterType">
+                    <option value="cat">猫</option>
+                    <option value="koala">コアラ</option>
+                    <option value="secret">シークレット</option>
+                    <option value="rabbit">うさぎ</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                <button id="uploadBtn" class="upload-btn">写真アップロード</button>
+            </div>
+            
+            <div class="control-group">
+                <button id="randomBtn" class="upload-btn">ランダムキャラクター</button>
+            </div>
+        </aside>
+        
+        <!-- 臉部圈選界面 -->
+        <div id="faceSelector" class="face-selector" style="display: none;">
+            <div class="selector-content">
+                <h3 id="selectFaceTitle">顔領域を選択</h3>
+                <canvas id="photoCanvas" width="300" height="300"></canvas>
+                <div class="adjustment-controls">
+                    <label id="adjustPositionLabel">位置微調整</label>
+                    <div class="adjust-buttons">
+                        <button id="moveUp" class="adjust-btn">↑</button>
+                        <button id="moveDown" class="adjust-btn">↓</button>
+                        <button id="moveLeft" class="adjust-btn">←</button>
+                        <button id="moveRight" class="adjust-btn">→</button>
+                    </div>
+                    <div class="size-controls">
+                        <button id="sizeUp" class="adjust-btn" title="拡大">+</button>
+                        <button id="sizeDown" class="adjust-btn" title="縮小">-</button>
+                    </div>
+                </div>
+                <div class="selector-buttons">
+                    <button id="previewFace" class="upload-btn">プレビュー</button>
+                    <button id="confirmFace" class="upload-btn">確認</button>
+                    <button id="cancelFace" class="upload-btn">キャンセル</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 預覽視窗 -->
+        <div id="previewWindow" class="preview-window" style="display: none;">
+            <div class="preview-content">
+                <h3>プレビュー</h3>
+                <canvas id="previewCanvas" width="128" height="128"></canvas>
+                <div class="preview-buttons">
+                    <button id="closePreview" class="upload-btn">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

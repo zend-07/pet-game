@@ -1,0 +1,22 @@
+{
+  "name": "AOIのデジタルペット友達",
+  "short_name": "AOI Pet",
+  "description": "AOI的可愛電子寵物遊戲",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fecfef",
+  "theme_color": "#ff6b9d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "graphics/favicon.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "graphics/metaimage.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
