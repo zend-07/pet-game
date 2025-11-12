@@ -229,6 +229,8 @@ function createSpriteCanvas(img, x, y, width, height) {
     return canvas;
 }
 
+
+
 // 分配隨機角色
 function assignRandomCharacter() {
     if (characterSprites.length > 0) {
@@ -1018,6 +1020,83 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// 成就系統
+let achievements = {
+    careStreak: parseInt(localStorage.getItem('careStreak') || '0'),
+    totalFeeds: parseInt(localStorage.getItem('totalFeeds') || '0'),
+    totalPlays: parseInt(localStorage.getItem('totalPlays') || '0'),
+    perfectDays: parseInt(localStorage.getItem('perfectDays') || '0'),
+    lastCareDate: localStorage.getItem('lastCareDate') || ''
+};
+
+function updateAchievements(action) {
+    const today = new Date().toDateString();
+    
+    if (action === 'feed') {
+        achievements.totalFeeds++;
+        localStorage.setItem('totalFeeds', achievements.totalFeeds);
+        checkFeedAchievement();
+    } else if (action === 'play') {
+        achievements.totalPlays++;
+        localStorage.setItem('totalPlays', achievements.totalPlays);
+        checkPlayAchievement();
+    }
+    
+    // 檢查連續照顧天數
+    if (achievements.lastCareDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (achievements.lastCareDate === yesterday.toDateString()) {
+            achievements.careStreak++;
+        } else {
+            achievements.careStreak = 1;
+        }
+        
+        achievements.lastCareDate = today;
+        localStorage.setItem('careStreak', achievements.careStreak);
+        localStorage.setItem('lastCareDate', today);
+        
+        checkStreakAchievement();
+    }
+}
+
+function checkFeedAchievement() {
+    if (achievements.totalFeeds === 10) showAchievement('餌マスター！10回餌をあげました！');
+    if (achievements.totalFeeds === 50) showAchievement('料理長！50回餌をあげました！');
+}
+
+function checkPlayAchievement() {
+    if (achievements.totalPlays === 10) showAchievement('遊び上手！10回遊びました！');
+    if (achievements.totalPlays === 50) showAchievement('エンターテイナー！50回遊びました！');
+}
+
+function checkStreakAchievement() {
+    if (achievements.careStreak === 3) showAchievement('3日連続ケア達成！');
+    if (achievements.careStreak === 7) showAchievement('1週間連続ケア達成！');
+    if (achievements.careStreak === 30) showAchievement('1ヶ月連続ケア達成！');
+}
+
+function showAchievement(text) {
+    const achievement = document.createElement('div');
+    achievement.className = 'achievement-popup';
+    achievement.textContent = '🏆 ' + text;
+    document.body.appendChild(achievement);
+    
+    setTimeout(() => {
+        achievement.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+        achievement.classList.remove('show');
+        setTimeout(() => {
+            if (achievement.parentNode) {
+                achievement.parentNode.removeChild(achievement);
+            }
+        }, 500);
+    }, 3000);
+}
+
 // 愛心特效彩蛋
 function createHeartEffect(x, y) {
     for (let i = 0; i < 8; i++) {
@@ -1045,6 +1124,49 @@ function createHeartEffect(x, y) {
     }
 }
 
+// 粒子效果
+function createParticles() {
+    for (let i = 0; i < 5; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDelay = Math.random() * 3 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 5000);
+    }
+}
+
+// 按鈕漣漪效果
+function createRipple(e) {
+    const button = e.currentTarget;
+    const ripple = document.createElement('span');
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.classList.add('ripple');
+    
+    button.appendChild(ripple);
+    
+    setTimeout(() => {
+        ripple.remove();
+    }, 600);
+}
+
+// 隱藏彩蛋計數器
+let bowTieClicks = 0;
+let lastClickTime = 0;
+
 // 在裝飾條上添加點擊事件
 document.addEventListener('click', (e) => {
     const device = document.querySelector('.tamagotchi-device');
@@ -1056,15 +1178,69 @@ document.addEventListener('click', (e) => {
     
     // 蝴蝴結的位置範圍
     if (clickX >= 160 && clickX <= 200 && clickY >= 15 && clickY <= 45) {
+        const currentTime = Date.now();
+        
+        // 重置計數器如果超過2秒沒點擊
+        if (currentTime - lastClickTime > 2000) {
+            bowTieClicks = 0;
+        }
+        
+        bowTieClicks++;
+        lastClickTime = currentTime;
+        
         createHeartEffect(e.clientX, e.clientY);
         
-        // 音效（如果需要）
-        console.log('♥ 愛心特效觸發！ ♥');
+        // 隱藏彩蛋：連續點擊5次
+        if (bowTieClicks >= 5) {
+            triggerSecretAnimation();
+            bowTieClicks = 0;
+        }
         
-        // 阻止事件冒泡
+        console.log('♥ 愛心特效觸發！ ♥');
         e.stopPropagation();
     }
 });
+
+// 隱藏彩蛋動畫
+function triggerSecretAnimation() {
+    const device = document.querySelector('.tamagotchi-device');
+    device.classList.add('secret-animation');
+    
+    // 創建彩虹粒子效果
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => createParticles(), i * 100);
+    }
+    
+    showAchievement('隠しイースターエッグ発見！');
+    
+    setTimeout(() => {
+        device.classList.remove('secret-animation');
+    }, 3000);
+}
+
+// 檢查完美狀態
+function checkPerfectStatus() {
+    if (pet.happiness >= 90 && pet.tummy >= 90 && pet.energy >= 90) {
+        const device = document.querySelector('.tamagotchi-device');
+        device.classList.add('perfect-glow');
+        createParticles();
+        
+        setTimeout(() => {
+            device.classList.remove('perfect-glow');
+        }, 5000);
+    }
+}
+
+// 午夜特殊訊息
+function checkMidnightMessage() {
+    const now = new Date();
+    if (now.getHours() === 0 && now.getMinutes() === 0) {
+        showAchievement('真夜中のケア、ありがとう！🌙');
+    }
+}
+
+// 每分鐘檢查一次午夜
+setInterval(checkMidnightMessage, 60000);
 
 // 手機版按鈕文字顯示功能
 let buttonTextTimeout;
@@ -1089,15 +1265,38 @@ function showButtonText(buttonId) {
     }
 }
 
-playButton.addEventListener('click', () => {
+playButton.addEventListener('click', (e) => {
+    createRipple(e);
     showButtonText('play');
+    updateAchievements('play');
     pet.play();
+    setTimeout(checkPerfectStatus, 1000);
 });
-feedButton.addEventListener('click', () => {
+feedButton.addEventListener('click', (e) => {
+    createRipple(e);
     showButtonText('feed');
+    updateAchievements('feed');
     pet.feed();
+    setTimeout(checkPerfectStatus, 1000);
 });
-sleepButton.addEventListener('click', () => {
+sleepButton.addEventListener('click', (e) => {
+    createRipple(e);
     showButtonText('sleep');
     pet.sleep();
+    setTimeout(checkPerfectStatus, 1000);
+});
+
+// 隱藏重置按鈕
+document.getElementById('secretReset').addEventListener('click', () => {
+    pet.happiness = 100;
+    pet.tummy = 100;
+    pet.energy = 100;
+    pet.updateStats();
+    
+    // 立即檢查和觸發完美狀態
+    checkPerfectStatus();
+    
+    showAchievement('デバッグモード！全ステータスMAX！');
+    
+    console.log('🔧 隱藏重置功能使用！');
 });

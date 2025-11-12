@@ -636,6 +636,129 @@ button:hover + .button-text {
 	animation: heartFloat 1.5s ease-out forwards;
 }
 
+/* 成就彈窗 */
+.achievement-popup {
+	position: fixed;
+	top: 20px;
+	right: -300px;
+	background: linear-gradient(145deg, #ffd700, #ffed4e);
+	color: #333;
+	padding: 15px 20px;
+	border-radius: 25px;
+	font-weight: bold;
+	font-size: 0.9rem;
+	box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+	transition: right 0.5s ease;
+	z-index: 2000;
+	border: 2px solid #ffb700;
+}
+
+.achievement-popup.show {
+	right: 20px;
+}
+
+/* 粒子效果 */
+.particle {
+	position: fixed;
+	width: 8px;
+	height: 8px;
+	background: linear-gradient(45deg, #ff6b9d, #c44569, #4ecdc4, #45b7d1);
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 1000;
+	animation: particleFall linear forwards;
+}
+
+@keyframes particleFall {
+	0% {
+		top: -10px;
+		opacity: 1;
+		transform: scale(1) rotate(0deg);
+	}
+	100% {
+		top: 100vh;
+		opacity: 0;
+		transform: scale(0.3) rotate(360deg);
+	}
+}
+
+/* 按鈕漣漪效果 */
+button {
+	position: relative;
+	overflow: hidden;
+}
+
+.ripple {
+	position: absolute;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.6);
+	transform: scale(0);
+	animation: rippleEffect 0.6s linear;
+	pointer-events: none;
+}
+
+@keyframes rippleEffect {
+	to {
+		transform: scale(4);
+		opacity: 0;
+	}
+}
+
+/* 隱藏彩蛋動畫 */
+.tamagotchi-device.secret-animation {
+	animation: secretPulse 3s ease-in-out;
+	filter: hue-rotate(360deg);
+}
+
+@keyframes secretPulse {
+	0%, 100% { transform: scale(1); }
+	25% { transform: scale(1.05) rotate(2deg); }
+	50% { transform: scale(1.1) rotate(-2deg); }
+	75% { transform: scale(1.05) rotate(1deg); }
+}
+
+/* 完美狀態光環 */
+.tamagotchi-device.perfect-glow {
+	box-shadow: 
+		0 20px 40px rgba(255, 154, 158, 0.3),
+		0 0 0 8px rgba(255, 255, 255, 0.1),
+		inset 0 2px 0 rgba(255, 255, 255, 0.3),
+		inset 0 -2px 0 rgba(0, 0, 0, 0.1),
+		0 0 30px rgba(255, 215, 0, 0.8),
+		0 0 60px rgba(255, 215, 0, 0.4);
+	animation: perfectGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes perfectGlow {
+	0% { filter: brightness(1); }
+	100% { filter: brightness(1.2); }
+}
+
+/* 隱藏重置按鈕 */
+.secret-reset {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	width: 20px;
+	height: 20px;
+	font-size: 12px;
+	background: rgba(255, 255, 255, 0.1);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0.3;
+	transition: opacity 0.3s ease;
+	user-select: none;
+}
+
+.secret-reset:hover {
+	opacity: 0.8;
+	background: rgba(255, 255, 255, 0.2);
+}
+
 @media all and (max-width: 800px) {
     body {
 		min-height: 100vh;
