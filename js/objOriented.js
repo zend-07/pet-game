@@ -1126,19 +1126,20 @@ function createHeartEffect(x, y) {
 
 // 粒子效果
 function createParticles() {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 4; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDelay = Math.random() * 3 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        particle.style.top = '-10px';
+        particle.style.animationDelay = Math.random() * 1 + 's';
+        particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
         document.body.appendChild(particle);
         
         setTimeout(() => {
             if (particle.parentNode) {
                 particle.parentNode.removeChild(particle);
             }
-        }, 5000);
+        }, 4000);
     }
 }
 
@@ -1207,8 +1208,8 @@ function triggerSecretAnimation() {
     device.classList.add('secret-animation');
     
     // 創建彩虹粒子效果
-    for (let i = 0; i < 20; i++) {
-        setTimeout(() => createParticles(), i * 100);
+    for (let i = 0; i < 10; i++) {
+        setTimeout(() => createParticles(), i * 150);
     }
     
     showAchievement('隠しイースターエッグ発見！');
