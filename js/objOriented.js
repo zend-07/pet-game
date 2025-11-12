@@ -25,7 +25,13 @@ const translations = {
         close: '關閉',
         touchDragFace: '觸控拖拽選臉部',
         dragSelectFace: '拖拽圈選臉部區域',
-        faceSelected: '已選取臉部區域，可用按鈕微調'
+        faceSelected: '已選取臉部區域，可用按鈕微調',
+        deviceStyleLabel: '機器風格',
+        deviceStyle1: '風格1',
+        deviceStyle2: '風格2',
+        deviceStyle3: '風格3',
+        deviceStyle4: '風格4',
+        deviceStyle5: '風格5'
     },
 
     ja: {
@@ -51,7 +57,13 @@ const translations = {
         close: '閉じる',
         touchDragFace: 'タッチで顔選択',
         dragSelectFace: 'ドラッグで顔選択',
-        faceSelected: '顔選択完了、ボタンで微調整可能'
+        faceSelected: '顔選択完了、ボタンで微調整可能',
+        deviceStyleLabel: 'デバイススタイル',
+        deviceStyle1: 'スタイル1',
+        deviceStyle2: 'スタイル2',
+        deviceStyle3: 'スタイル3',
+        deviceStyle4: 'スタイル4',
+        deviceStyle5: 'スタイル5'
     }
 };
 
@@ -72,7 +84,18 @@ function updateLanguage(lang) {
     document.getElementById('feed-text').textContent = t.feed;
     document.getElementById('sleep-text').textContent = t.sleep;
     document.getElementById('characterTypeLabel').textContent = t.characterType;
+    document.getElementById('deviceStyleLabel').textContent = t.deviceStyleLabel;
     document.getElementById('selectFaceTitle').textContent = t.selectFace;
+    
+    // 更新機器風格選項
+    const deviceSelect = document.getElementById('deviceStyle');
+    if (deviceSelect) {
+        deviceSelect.options[0].textContent = t.deviceStyle1;
+        deviceSelect.options[1].textContent = t.deviceStyle2;
+        deviceSelect.options[2].textContent = t.deviceStyle3;
+        deviceSelect.options[3].textContent = t.deviceStyle4;
+        deviceSelect.options[4].textContent = t.deviceStyle5;
+    }
     // 更新臉部選擇界面文字
     const confirmBtn = document.getElementById('confirmFace');
     if (confirmBtn) confirmBtn.textContent = t.confirm;
@@ -105,6 +128,7 @@ function updateLanguage(lang) {
 
 const languageSelect = document.querySelector('#languageSelect');
 const characterTypeSelect = document.querySelector('#characterType');
+const deviceStyleSelect = document.querySelector('#deviceStyle');
 const uploadBtn = document.querySelector('#uploadBtn');
 const randomBtn = document.querySelector('#randomBtn');
 const photoUpload = document.querySelector('#photoUpload');
@@ -879,6 +903,13 @@ setTimeout(() => {
 
 // 事件監聽器
 languageSelect.addEventListener('change', (e) => updateLanguage(e.target.value));
+deviceStyleSelect.addEventListener('change', (e) => {
+    const device = document.querySelector('.tamagotchi-device');
+    device.className = 'tamagotchi-device';
+    if (e.target.value !== 'default') {
+        device.classList.add('style-' + e.target.value);
+    }
+});
 characterTypeSelect.addEventListener('change', () => {
     const selectedType = characterTypeSelect.value;
     const typeIndex = ['cat', 'koala', 'secret', 'rabbit'].indexOf(selectedType);

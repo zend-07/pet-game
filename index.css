@@ -63,6 +63,34 @@ body {
 	box-shadow: 0 4px 8px rgba(255, 107, 157, 0.4);
 }
 
+.tamagotchi-device.style-hearts {
+	background-image: url('bg_1.png'), linear-gradient(145deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.tamagotchi-device.style-style2 {
+	background-image: url('bg_2.png'), linear-gradient(145deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.tamagotchi-device.style-style3 {
+	background-image: url('bg_3.png'), linear-gradient(145deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.tamagotchi-device.style-style4 {
+	background-image: url('bg_4.png'), linear-gradient(145deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
 
 
 header {
